@@ -395,6 +395,10 @@ coap_show_pdu(const coap_pdu_t *pdu) {
   size_t data_len;
   unsigned char *data;
 
+
+  /* if -v 0, no verbose message */
+  if (coap_get_log_level() == LOG_EMERG) return;
+
   fprintf(COAP_DEBUG_FD, "v:%d t:%s c:%s i:%04x {",
 	  pdu->hdr->version, msg_type_string(pdu->hdr->type),
 	  msg_code_string(pdu->hdr->code), ntohs(pdu->hdr->id));
