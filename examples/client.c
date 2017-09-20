@@ -1109,6 +1109,8 @@ main(int argc, char **argv) {
   unsigned char user[MAX_USER + 1], key[MAX_KEY];
   ssize_t user_length = 0, key_length = 0;
   int create_uri_opts = 1;
+  
+  int wait_flag = 0; // Mike
 
   while ((opt = getopt(argc, argv, "Na:b:e:f:g:k:m:p:s:t:o:v:A:B:O:P:T:u:U:l:")) != -1) {
     switch (opt) {
@@ -1307,31 +1309,39 @@ main(int argc, char **argv) {
 
   wait_ms = wait_seconds * 1000;
   debug("timeout is set to %u seconds\n", wait_seconds);
-
-  while ( !(ready && coap_can_exit(ctx)) ) {
+  
+  // Mike
+  wait_flag = coap_can_exit(ctx);
+  debug("Mike_Debug_0: %d %d\n", ready, wait_flag);
+  
+  // Mike
+  // while ( !(ready && coap_can_exit(ctx)) ) {
+  
+  while ( !(ready && wait_flag) ) {  
 
     result = coap_run_once( ctx, wait_ms == 0 ? obs_ms : obs_ms == 0 ? wait_ms : min( wait_ms, obs_ms ) );
 
     if ( result >= 0 ) {
       if ( wait_ms > 0 && !wait_ms_reset ) {
-	if ( (unsigned)result >= wait_ms ) {
-	  info( "timeout\n" );
-	  break;
-	} else {
-	  wait_ms -= result;
-	}
+        if ( (unsigned)result >= wait_ms ) {
+          info( "timeout\n" );
+          break;
+        } else {
+          wait_ms -= result;
+        }
       }
+      
       if ( obs_ms > 0 && !obs_ms_reset ) {
-	if ( (unsigned)result >= obs_ms ) {
-	  debug( "clear observation relationship\n" );
-	  clear_obs( ctx, session ); /* FIXME: handle error case COAP_TID_INVALID */
+        if ( (unsigned)result >= obs_ms ) {
+          debug( "clear observation relationship\n" );
+          clear_obs( ctx, session ); /* FIXME: handle error case COAP_TID_INVALID */
 
-	  /* make sure that the obs timer does not fire again */
-	  obs_ms = 0;
-	  obs_seconds = 0;
-	} else {
-	  obs_ms -= result;
-	}
+          /* make sure that the obs timer does not fire again */
+          obs_ms = 0;
+          obs_seconds = 0;
+        } else {
+          obs_ms -= result;
+        }
       }
       wait_ms_reset = 0;
       obs_ms_reset = 0;
