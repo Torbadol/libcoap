@@ -1320,6 +1320,9 @@ main(int argc, char **argv) {
   while ( !(ready && wait_flag) ) {  
 
     result = coap_run_once( ctx, wait_ms == 0 ? obs_ms : obs_ms == 0 ? wait_ms : min( wait_ms, obs_ms ) );
+    
+    // Mike
+    debug("Mike_Debug_1: %d %d\n", result, wait_ms == 0 ? obs_ms : obs_ms == 0 ? wait_ms : min( wait_ms, obs_ms ));
 
     if ( result >= 0 ) {
       if ( wait_ms > 0 && !wait_ms_reset ) {
