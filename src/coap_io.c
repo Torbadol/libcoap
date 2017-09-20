@@ -726,10 +726,11 @@ coap_write(coap_context_t *ctx,
 
   nextpdu = coap_peek_next(ctx);
 
-  while (nextpdu && now >= ctx->sendqueue_basetime && nextpdu->t <= now - ctx->sendqueue_basetime) {
-    coap_retransmit(ctx, coap_pop_next(ctx));
-    nextpdu = coap_peek_next(ctx);
-  }
+  // Mike
+  //while (nextpdu && now >= ctx->sendqueue_basetime && nextpdu->t <= now - ctx->sendqueue_basetime) {
+  //  coap_retransmit(ctx, coap_pop_next(ctx));
+  //  nextpdu = coap_peek_next(ctx);
+  //}
 
   if (nextpdu && (timeout == 0 || nextpdu->t - ( now - ctx->sendqueue_basetime ) < timeout))
     timeout = nextpdu->t - (now - ctx->sendqueue_basetime);
