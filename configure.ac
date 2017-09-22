@@ -328,20 +328,19 @@ if test "x$build_dtls" = "xyes"; then
     fi
 
     # The user wants to use explicit OpenSSL if '--with-openssl was set'.
-    if test "x$with_openssl" = "xyes"; then
-        # Some more sanity checking.
-        if test "x$have_openssl" != "xyes"; then
-            AC_MSG_ERROR([==> You want to build libcoap with DTLS support by the OpenSSL library but pkg-config file 'openssl.pc' could not be found!
-                      Install the package(s) containing the development files for OpenSSL,
-                      or use '--with_gnutls' or disable the DTLS support using '--disable-dtls'.])
-        fi
-        AC_MSG_NOTICE([The use of OpenSSL was explicit requested due configure option '--with-openssl'!])
-
+    #if test "x$with_openssl" = "xyes"; then
+    #    # Some more sanity checking.
+    #    if test "x$have_openssl" != "xyes"; then
+    #        AC_MSG_ERROR([==> You want to build libcoap with DTLS support by the OpenSSL library but pkg-config file 'openssl.pc' could not be found!
+    #                  Install the package(s) containing the development files for OpenSSL,
+    #                  or use '--with_gnutls' or disable the DTLS support using '--disable-dtls'.])
+    #    fi
+    #    AC_MSG_NOTICE([The use of OpenSSL was explicit requested due configure option '--with-openssl'!])
         # check for valid OpenSSL version
-        openssl_version=`pkg-config --modversion openssl`
-        AX_CHECK_OPENSSL_VERSION
-        have_gnutls="no" # don't confuse AC_MSG_RESULT at the end of the script
-    fi
+    #    openssl_version=`pkg-config --modversion openssl`
+    #    AX_CHECK_OPENSSL_VERSION
+    #    have_gnutls="no" # don't confuse AC_MSG_RESULT at the end of the script
+    #fi
 
     # The user wants to use explicit OpenSSL if '--with-tinydtls was set'.
     if test "x$with_tinydtls" = "xyes" ; then
@@ -368,13 +367,13 @@ if test "x$build_dtls" = "xyes"; then
     fi
 
     # ... and if not found check OpenSSL is suitable.
-    if test "x$have_openssl" = "xyes" -a "x$with_openssl" = "xno" -a "x$with_gnutls_auto" = "x" -a "x$with_tinydtls" = "xno"; then
-        openssl_version=`pkg-config --modversion openssl`
-        AX_CHECK_OPENSSL_VERSION
-        AC_MSG_NOTICE([Using autoselected library OpenSSL for DTLS support!])
-        with_openssl_auto="yes"
-        have_gnutls="no" # don't confuse AC_MSG_RESULT at the end of the script
-    fi
+    #if test "x$have_openssl" = "xyes" -a "x$with_openssl" = "xno" -a "x$with_gnutls_auto" = "x" -a "x$with_tinydtls" = "xno"; then
+    #    openssl_version=`pkg-config --modversion openssl`
+    #    AX_CHECK_OPENSSL_VERSION
+    #    AC_MSG_NOTICE([Using autoselected library OpenSSL for DTLS support!])
+    #    with_openssl_auto="yes"
+    #    have_gnutls="no" # don't confuse AC_MSG_RESULT at the end of the script
+    #fi
 
     # Note that tinyDTLS is used only when explicitly requested.
 
